@@ -1,4 +1,4 @@
-window.alert('W,A,S,D to control the snake.')
+window.alert("W,A,S,D to control the snake.");
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 canvas.width = 800;
@@ -28,7 +28,8 @@ class GameStage {
       this.generateFood();
     }
     this.points = 0;
-    document.addEventListener("keydown", this.keydown.bind(this));
+    this.keydownHandler = this.keydown.bind(this);
+    document.addEventListener("keydown", this.keydownHandler);
   }
 
   keydown(event) {
@@ -36,21 +37,29 @@ class GameStage {
     //And after one game update the canChangeDirection variable will be changed to true.
     let tecla = event.key;
     if (this.canChangeDirection) {
-      if ((tecla == "w" || tecla == 'ArrowUp') && this.direction != "bottom") {
+      if ((tecla == "w" || tecla == "ArrowUp") && this.direction != "bottom") {
         this.direction = "top";
         this.canChangeDirection = false;
-      } else if ((tecla == "s" || tecla == 'ArrowDown') && this.direction != "top") {
+      } else if (
+        (tecla == "s" || tecla == "ArrowDown") &&
+        this.direction != "top"
+      ) {
         this.direction = "bottom";
         this.canChangeDirection = false;
-      } else if ((tecla == "a" || tecla == 'ArrowLeft') && this.direction != "right") {
+      } else if (
+        (tecla == "a" || tecla == "ArrowLeft") &&
+        this.direction != "right"
+      ) {
         this.direction = "left";
         this.canChangeDirection = false;
-      } else if ((tecla == "d" || tecla == 'ArrowRight') && this.direction != "left") {
+      } else if (
+        (tecla == "d" || tecla == "ArrowRight") &&
+        this.direction != "left"
+      ) {
         this.direction = "right";
         this.canChangeDirection = false;
       }
     }
-    console.log(tecla);
   }
 
   generateGrid() {
@@ -165,12 +174,12 @@ class GameStage {
       previousPosition = previousPositionBackup;
     }
   }
-  
-  verifyEndGame(){
+
+  verifyEndGame() {
     //Verifies if the free tiles amount is enough to finish the game
     let tilesAmount = this.gridWidth * this.gridHeight;
     let tilesUsed = this.segments.length + this.foods.length;
-    if(tilesAmount - tilesUsed <= 5){
+    if (tilesAmount - tilesUsed <= 5) {
       this.gameFinished();
     }
   }
@@ -192,6 +201,7 @@ class GameStage {
   }
 
   gameOver() {
+    document.removeEventListener("keydown", this.keydownHandler);
     //Creates a new instance of GameStage and replaces the current instance in the renderList array
     for (let i = 0; i < renderList.length; i++) {
       if (renderList[i] instanceof GameStage) {
@@ -200,12 +210,13 @@ class GameStage {
     }
   }
 
-  gameFinished(){
+  gameFinished() {
+    document.removeEventListener("keydown", this.keydownHandler);
     //Removes the game instance and creates a new MenuInterface instance.
     for (let i = 0; i < renderList.length; i++) {
       if (renderList[i] instanceof GameStage) {
         renderList.splice(i, 1);
-        renderList.push(new MenuInterface('Congratulations!', "Play again"));
+        renderList.push(new MenuInterface("Congratulations!", "Play again"));
       }
     }
   }
@@ -290,7 +301,7 @@ class MenuInterface {
     }
   }
   play() {
-    //Removes the MenuInterface instance and adds a new GameStage instance 
+    //Removes the MenuInterface instance and adds a new GameStage instance
     for (let i = 0; i < renderList.length; i++) {
       if (renderList[i] instanceof MenuInterface) {
         renderList.splice(i, 1);
