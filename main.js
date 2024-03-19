@@ -36,20 +36,21 @@ class GameStage {
     //And after one game update the canChangeDirection variable will be changed to true.
     let tecla = event.key;
     if (this.canChangeDirection) {
-      if (tecla == "w" && this.direction != "bottom") {
+      if ((tecla == "w" || tecla == 'ArrowUp') && this.direction != "bottom") {
         this.direction = "top";
         this.canChangeDirection = false;
-      } else if (tecla == "s" && this.direction != "top") {
+      } else if ((tecla == "s" || tecla == 'ArrowDown') && this.direction != "top") {
         this.direction = "bottom";
         this.canChangeDirection = false;
-      } else if (tecla == "a" && this.direction != "right") {
+      } else if ((tecla == "a" || tecla == 'ArrowLeft') && this.direction != "right") {
         this.direction = "left";
         this.canChangeDirection = false;
-      } else if (tecla == "d" && this.direction != "left") {
+      } else if ((tecla == "d" || tecla == 'ArrowRight') && this.direction != "left") {
         this.direction = "right";
         this.canChangeDirection = false;
       }
     }
+    console.log(tecla);
   }
 
   generateGrid() {
